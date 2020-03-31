@@ -10,7 +10,7 @@ GAME RULES:
 */
 
 /* CHALLENGE 1
-A player looses his ENTIRE score when he rolls two 6 in a row. After that, it's the next player's turn.
+Add an input field to the HTML where players can set the winning score, so that they can change the predefined score of 100.
 */
 
 //Data
@@ -22,7 +22,8 @@ let gameOver = false;
 let randomDice;
 let dice = document.querySelector(".dice");
 
-let rolled = [];
+let goal = 10;
+
 
 //Functions
 function editScore() {
@@ -51,17 +52,9 @@ function reset() {
     document.getElementById('name-1').textContent = "Player 2";
     document.querySelector('.player-0-panel').classList.remove('winner');
     document.querySelector('.player-1-panel').classList.remove('winner');
+    goal = prompt("Max score ?");
 }
 
-function checkSix() {
-    for (let i = 0; i < rolled.length; i++) {
-        if (rolled[i] == 6 && rolled[i+1] == 6) {
-            console.log("double 6");
-            roundScore = 0;
-            nextPlayer();
-        }
-    }
-}
 
 //Hide dice on page load
 dice.style.display = "none";
@@ -83,10 +76,7 @@ document.querySelector(".btn-roll").addEventListener('click', function () {
         if (randomDice == 1) {
             nextPlayer();
         } else {
-            rolled.push(randomDice);
             roundScore += randomDice;
-            checkSix();
-            console.log(rolled);
         }
 
         editScore();
@@ -105,7 +95,7 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
         document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
 
         //Check win
-        if (scores[activePlayer] >= 100) {
+        if (scores[activePlayer] >= goal) {
             document.querySelector('#name-' + activePlayer).textContent = "Winner";
             document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
             dice.style.display = "none";
