@@ -9,14 +9,20 @@ GAME RULES:
 
 */
 
+/* Challenge 3 
+Add another dice to the game, so that there are two dices now. 
+*/
+
 //Data
 let scores = [0, 0];
 let roundScore = 0;
 let activePlayer = 0;
 let gameOver = false;
 
-let randomDice;
-let dice = document.querySelector(".dice");
+let randomDiceOne;
+let randomDiceTwo;
+let diceOne = document.querySelector(".dice-one");
+let diceTwo = document.querySelector(".dice-two");
 
 //Functions
 function editScore() {
@@ -46,7 +52,8 @@ function reset() {
 }
 
 //Hide dice on page load
-dice.style.display = "none";
+diceOne.style.display = "none";
+diceTwo.style.display = "none";
 
 
 document.querySelector(".btn-roll").addEventListener('click', function () {
@@ -54,17 +61,20 @@ document.querySelector(".btn-roll").addEventListener('click', function () {
     if (gameOver === false) {
 
         //Random number
-        randomDice = Math.floor(Math.random() * 6 + 1);
+        randomDiceOne = Math.floor(Math.random() * 6 + 1);
+        randomDiceTwo = Math.floor(Math.random() * 6 + 1);
 
         //Display the result
-        dice.style.display = "inline-block";
-        dice.src = "images/dice-" + randomDice + ".png"
+        diceOne.style.display = "inline-block";
+        diceTwo.style.display = "inline-block";
+        diceOne.src = "images/dice-" + randomDiceOne + ".png"
+        diceTwo.src = "images/dice-" + randomDiceTwo + ".png"
 
         //Edit score
-        if (randomDice == 1) {
+        if (randomDiceOne == 1 || randomDiceTwo == 1) {
             nextPlayer();
         } else {
-            roundScore += randomDice;
+            roundScore += (randomDiceOne + randomDiceTwo);
         }
 
         editScore();
@@ -83,10 +93,11 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
         document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
 
         //Check win
-        if (scores[activePlayer] >= 10) {
+        if (scores[activePlayer] >= 25) {
             document.querySelector('#name-' + activePlayer).textContent = "Winner";
             document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
-            dice.style.display = "none";
+            diceOne.style.display = "none";
+            diceTwo.style.display = "none";
             gameOver = true;
         } else {
 
