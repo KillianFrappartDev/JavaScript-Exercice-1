@@ -9,6 +9,10 @@ GAME RULES:
 
 */
 
+/* CHALLENGE 1
+A player looses his ENTIRE score when he rolls two 6 in a row. After that, it's the next player's turn.
+*/
+
 //Data
 let scores = [0, 0];
 let roundScore = 0;
@@ -17,6 +21,8 @@ let gameOver = false;
 
 let randomDice;
 let dice = document.querySelector(".dice");
+
+let rolled = [];
 
 //Functions
 function editScore() {
@@ -29,6 +35,8 @@ function nextPlayer() {
     document.querySelector(".player-" + activePlayer + "-panel").classList.remove("active");
     activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
     document.querySelector(".player-" + activePlayer + "-panel").classList.add("active");
+    rolled = [];
+    console.log("next player");
 }
 
 function reset() {
@@ -45,6 +53,16 @@ function reset() {
     document.querySelector('.player-1-panel').classList.remove('winner');
 }
 
+function checkSix() {
+    for (let i = 0; i < rolled.length; i++) {
+        if (rolled[i] == 6 && rolled[i+1] == 6) {
+            console.log("double 6");
+            roundScore = 0;
+            nextPlayer();
+        }
+    }
+}
+
 //Hide dice on page load
 dice.style.display = "none";
 
@@ -55,6 +73,7 @@ document.querySelector(".btn-roll").addEventListener('click', function () {
 
         //Random number
         randomDice = Math.floor(Math.random() * 6 + 1);
+        console.log(randomDice);
 
         //Display the result
         dice.style.display = "inline-block";
@@ -64,7 +83,10 @@ document.querySelector(".btn-roll").addEventListener('click', function () {
         if (randomDice == 1) {
             nextPlayer();
         } else {
+            rolled.push(randomDice);
             roundScore += randomDice;
+            checkSix();
+            console.log(rolled);
         }
 
         editScore();
@@ -83,7 +105,7 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
         document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
 
         //Check win
-        if (scores[activePlayer] >= 10) {
+        if (scores[activePlayer] >= 100) {
             document.querySelector('#name-' + activePlayer).textContent = "Winner";
             document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
             dice.style.display = "none";
@@ -99,4 +121,6 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
 document.querySelector(".btn-new").addEventListener("click", function () {
     reset();
 });
+
+
 
