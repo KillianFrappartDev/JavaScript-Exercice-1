@@ -9,7 +9,7 @@ GAME RULES:
 
 */
 
-// DATA
+//Data
 let scores = [0, 0];
 let roundScore = 0;
 let activePlayer = 0;
@@ -17,6 +17,33 @@ let gameOver = false;
 
 let randomDice;
 let dice = document.querySelector(".dice");
+
+//Functions
+function editScore() {
+    document.querySelector("#current-" + activePlayer).textContent = roundScore;
+}
+
+function nextPlayer() {
+    roundScore = 0;
+    editScore();
+    document.querySelector(".player-" + activePlayer + "-panel").classList.remove("active");
+    activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+    document.querySelector(".player-" + activePlayer + "-panel").classList.add("active");
+}
+
+function reset() {
+    gameOver = false;
+    scores[0] = 0;
+    scores[1] = 0;
+    activePlayer = 0;
+    nextPlayer();
+    document.querySelector("#score-0").textContent = 0;
+    document.querySelector("#score-1").textContent = 0;
+    document.getElementById('name-0').textContent = "Player 1";
+    document.getElementById('name-1').textContent = "Player 2";
+    document.querySelector('.player-0-panel').classList.remove('winner');
+    document.querySelector('.player-1-panel').classList.remove('winner');
+}
 
 //Hide dice on page load
 dice.style.display = "none";
@@ -58,6 +85,7 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
         //Check win
         if (scores[activePlayer] >= 10) {
             document.querySelector('#name-' + activePlayer).textContent = "Winner";
+            document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
             dice.style.display = "none";
             gameOver = true;
         } else {
@@ -68,15 +96,7 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
     }
 });
 
-//Functions
-function editScore() {
-    document.querySelector("#current-" + activePlayer).textContent = roundScore;
-}
+document.querySelector(".btn-new").addEventListener("click", function () {
+    reset();
+});
 
-function nextPlayer() {
-    roundScore = 0;
-    editScore();
-    document.querySelector(".player-" + activePlayer + "-panel").classList.remove("active");
-    activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
-    document.querySelector(".player-" + activePlayer + "-panel").classList.add("active");
-}
